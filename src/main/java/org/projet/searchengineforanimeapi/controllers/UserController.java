@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -46,6 +47,18 @@ public class UserController {
         }
     }
 
+    @PostMapping("/resend-code")
+    public ResponseEntity<String> resendVerificationCode(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        System.out.println("Email reçu : " + email);
+
+        try {
+            userService.resendVerificationCode(email);
+            return ResponseEntity.ok("Code de vérification renvoyé avec succès.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur lors du renvoi du code.");
+        }
+    }
 
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> request) {

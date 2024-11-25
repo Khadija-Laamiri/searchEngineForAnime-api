@@ -20,9 +20,9 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String name;
     @NonNull
+    @Column(unique = true)
     private String email;
     private String password;
     private String verificationCode;

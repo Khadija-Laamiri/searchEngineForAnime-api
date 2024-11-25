@@ -19,4 +19,6 @@ public interface UserService {
     User updateUserFromInput(Long id, UserInput input);
 
     User saveUser(User user);
+
+    void resendVerificationCode(String email);
 }

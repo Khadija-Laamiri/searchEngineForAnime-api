@@ -26,8 +26,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest registerRequest) {
         var user = User.builder()
-                .firstName(registerRequest.getFirstName())
-                .lastName(registerRequest.getLastName())
+                .name(registerRequest.getName())
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.USER)
@@ -59,11 +58,11 @@ public class AuthenticationService {
                 .build();
     }
 
-    private String generateVerificationCode() {
+    public String generateVerificationCode() {
         return UUID.randomUUID().toString().substring(0, 6).toUpperCase();
     }
 
-    private void sendVerificationEmail(String email, String verificationCode) {
+    public void sendVerificationEmail(String email, String verificationCode) {
         String subject = "Vérification de votre compte";
         String message = "Votre code de vérification est : " + verificationCode;
         emailService.sendEmail(email, subject, message);
