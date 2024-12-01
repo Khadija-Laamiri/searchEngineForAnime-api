@@ -1,4 +1,4 @@
-package org.projet.searchengineforanimeapi.services;
+package org.projet.searchengineforanimeapi.services.impl;
 
 
 import lombok.RequiredArgsConstructor;
@@ -6,13 +6,14 @@ import org.projet.searchengineforanimeapi.auth.AuthenticationService;
 import org.projet.searchengineforanimeapi.dtos.UserInput;
 import org.projet.searchengineforanimeapi.entities.User;
 import org.projet.searchengineforanimeapi.repositories.UserRepo;
+import org.projet.searchengineforanimeapi.services.EmailService;
+import org.projet.searchengineforanimeapi.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
