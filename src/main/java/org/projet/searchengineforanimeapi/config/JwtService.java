@@ -43,7 +43,8 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails,Long userId) {
+        extraClaims.put("userId", userId);
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
@@ -53,8 +54,8 @@ public class JwtService {
                 .compact();
     }
 
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(UserDetails userDetails,Long userId){
+        return generateToken(new HashMap<>(), userDetails,userId);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

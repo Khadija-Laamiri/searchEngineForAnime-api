@@ -35,7 +35,8 @@ public class AuthenticationService {
         String verificationCode = generateVerificationCode();
         user.setVerificationCode(verificationCode);
         User savedUser = userRepo.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        Long userId = savedUser.getId();
+        var jwtToken = jwtService.generateToken(user,userId);
 
         sendVerificationEmail(savedUser.getEmail(), verificationCode);
         return AuthenticationResponse.builder()
@@ -52,7 +53,7 @@ public class AuthenticationService {
         );
         var user = userRepo.findByEmail(authRequest.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user,user.getId());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

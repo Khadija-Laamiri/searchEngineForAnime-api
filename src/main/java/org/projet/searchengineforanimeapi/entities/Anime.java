@@ -27,4 +27,5 @@ public class Anime {
     private List<String> genres; // Maps "genres" as a collection of strings
     private String demographic; // Maps "demographic"
     private String studios; // Maps "studios"
+    private String premiered;
 }
