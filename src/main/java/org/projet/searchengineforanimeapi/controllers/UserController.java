@@ -1,7 +1,9 @@
 package org.projet.searchengineforanimeapi.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.projet.searchengineforanimeapi.dtos.AnimeDTO;
 import org.projet.searchengineforanimeapi.dtos.UserInput;
+import org.projet.searchengineforanimeapi.entities.Anime;
 import org.projet.searchengineforanimeapi.entities.User;
 import org.projet.searchengineforanimeapi.repositories.UserRepo;
 import org.projet.searchengineforanimeapi.services.UserService;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -112,4 +115,20 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/{id}/animes")
+    public ResponseEntity<List<AnimeDTO>> getAnimesByUserId(@PathVariable Long id) {
+        try {
+            List<AnimeDTO> animes = userService.getAnimesByUserId(id);
+            if (animes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return ResponseEntity.ok(animes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
 }

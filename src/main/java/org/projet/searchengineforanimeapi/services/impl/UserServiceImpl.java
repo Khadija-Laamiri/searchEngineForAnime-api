@@ -3,17 +3,19 @@ package org.projet.searchengineforanimeapi.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.projet.searchengineforanimeapi.auth.AuthenticationService;
+import org.projet.searchengineforanimeapi.dtos.AnimeDTO;
 import org.projet.searchengineforanimeapi.dtos.UserInput;
+import org.projet.searchengineforanimeapi.entities.Anime;
 import org.projet.searchengineforanimeapi.entities.User;
+import org.projet.searchengineforanimeapi.mappers.AnimeMapper;
 import org.projet.searchengineforanimeapi.repositories.UserRepo;
 import org.projet.searchengineforanimeapi.services.EmailService;
 import org.projet.searchengineforanimeapi.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -112,4 +114,13 @@ public class UserServiceImpl implements UserService {
         userRepo.save(user);
         authenticationService.sendVerificationEmail(user.getEmail(), verificationCode);
     }
+
+    @Override
+    public List<AnimeDTO> getAnimesByUserId(Long userId) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("Utilisateur introuvable."));
+        return user.getAnimes().stream()
+                .map(AnimeMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

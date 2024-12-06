@@ -1,8 +1,10 @@
 package org.projet.searchengineforanimeapi.services;
 
+import org.projet.searchengineforanimeapi.dtos.AnimeDTO;
 import org.projet.searchengineforanimeapi.dtos.UserInput;
 import org.projet.searchengineforanimeapi.entities.User;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,4 +23,6 @@ public interface UserService {
     User saveUser(User user);
 
     void resendVerificationCode(String email);
+
+    List<AnimeDTO> getAnimesByUserId(Long userId);
 }
