@@ -7,6 +7,7 @@ import org.projet.searchengineforanimeapi.entities.Anime;
 import org.projet.searchengineforanimeapi.entities.User;
 import org.projet.searchengineforanimeapi.repositories.UserRepo;
 import org.projet.searchengineforanimeapi.services.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -117,18 +118,22 @@ public class UserController {
     }
 
     @GetMapping("/{id}/animes")
-    public ResponseEntity<List<AnimeDTO>> getAnimesByUserId(@PathVariable Long id) {
+    public ResponseEntity<Page<AnimeDTO>> getAnimesByUserId(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         try {
-            List<AnimeDTO> animes = userService.getAnimesByUserId(id);
-            if (animes.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            Page<AnimeDTO> animePage = userService.getAnimesByUserId(id, page, size);
+            if (animePage.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
             }
-            return ResponseEntity.ok(animes);
+            return ResponseEntity.ok(animePage);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Page.empty());
         }
     }
+
 
 
 }

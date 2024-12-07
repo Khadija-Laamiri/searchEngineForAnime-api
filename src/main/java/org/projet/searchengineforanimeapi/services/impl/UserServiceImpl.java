@@ -5,12 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.projet.searchengineforanimeapi.auth.AuthenticationService;
 import org.projet.searchengineforanimeapi.dtos.AnimeDTO;
 import org.projet.searchengineforanimeapi.dtos.UserInput;
-import org.projet.searchengineforanimeapi.entities.Anime;
 import org.projet.searchengineforanimeapi.entities.User;
 import org.projet.searchengineforanimeapi.mappers.AnimeMapper;
 import org.projet.searchengineforanimeapi.repositories.UserRepo;
 import org.projet.searchengineforanimeapi.services.EmailService;
 import org.projet.searchengineforanimeapi.services.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -116,11 +119,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<AnimeDTO> getAnimesByUserId(Long userId) {
-        User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("Utilisateur introuvable."));
-        return user.getAnimes().stream()
+    public Page<AnimeDTO> getAnimesByUserId(Long userId, int page, int size) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable."));
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        // Assuming user.getAnimes() is a Collection and not a JPA relation
+        List<AnimeDTO> animes = user.getAnimes().stream()
                 .map(AnimeMapper::toDto)
                 .collect(Collectors.toList());
+
+        // Convert the list to a Page
+        return createPageFromList(animes, pageable);
+    }
+
+    // Helper method to create a Page from a List
+    private <T> Page<T> createPageFromList(List<T> list, Pageable pageable) {
+        int start = Math.min((int) pageable.getOffset(), list.size());
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+        return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
 
 }
