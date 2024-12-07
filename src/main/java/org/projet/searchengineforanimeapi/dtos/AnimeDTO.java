@@ -8,5 +8,5 @@ public class AnimeDTO {
     private String title;
     private Double score;
     private String shortDescription;
-
+    private String doc_name;
 }

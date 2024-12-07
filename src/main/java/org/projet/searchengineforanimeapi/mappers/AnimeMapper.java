@@ -10,6 +10,7 @@ public class AnimeMapper {
         dto.setTitle(anime.getTitle());
         dto.setScore(anime.getScore());
         dto.setShortDescription(generateShortDescription(anime.getDescription()));
+        dto.setDoc_name(anime.getDoc_name());
         return dto;
     }
 
