@@ -134,6 +134,19 @@ public class UserController {
         }
     }
 
-
-
+    @DeleteMapping("/{userId}/animes/{animeId}")
+    public ResponseEntity<String> removeAnimeFromUser(
+            @PathVariable Long userId,
+            @PathVariable Long animeId) {
+        try {
+            userService.removeAnimeFromUser(userId, animeId);
+            return ResponseEntity.ok("Anime supprimé de la liste de l'utilisateur.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la suppression de l'anime.");
+        }
+    }
 }

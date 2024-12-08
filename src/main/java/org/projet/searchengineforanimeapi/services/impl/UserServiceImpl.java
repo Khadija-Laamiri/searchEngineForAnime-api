@@ -141,4 +141,18 @@ public class UserServiceImpl implements UserService {
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
 
+    @Override
+    public void removeAnimeFromUser(Long userId, Long animeId) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable."));
+
+        // Find the anime to remove
+        boolean removed = user.getAnimes().removeIf(anime -> anime.getId().equals(animeId));
+
+        if (!removed) {
+            throw new RuntimeException("Anime introuvable dans la liste de l'utilisateur.");
+        }
+
+        userRepo.save(user); // Save the user entity after removing the anime
+    }
 }
