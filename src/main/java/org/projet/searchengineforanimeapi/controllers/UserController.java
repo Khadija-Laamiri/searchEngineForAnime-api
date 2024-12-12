@@ -149,4 +149,22 @@ public class UserController {
                     .body("Erreur lors de la suppression de l'anime.");
         }
     }
+
+    @PostMapping("/{userId}/animes/{animeId}")
+    public ResponseEntity<String> addAnimeToUser(
+            @PathVariable Long userId,
+            @PathVariable Long animeId) {
+        try {
+                userService.addAnimeToUser(userId, animeId);
+            return ResponseEntity.ok("Anime a ete ajoute a la liste de l'utilisateur.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la suppression de l'anime.");
+        }
+    }
+
+
 }

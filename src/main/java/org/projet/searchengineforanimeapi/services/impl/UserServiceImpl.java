@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.projet.searchengineforanimeapi.auth.AuthenticationService;
 import org.projet.searchengineforanimeapi.dtos.AnimeDTO;
 import org.projet.searchengineforanimeapi.dtos.UserInput;
+import org.projet.searchengineforanimeapi.entities.Anime;
 import org.projet.searchengineforanimeapi.entities.User;
 import org.projet.searchengineforanimeapi.mappers.AnimeMapper;
+import org.projet.searchengineforanimeapi.repositories.AnimeRepository;
 import org.projet.searchengineforanimeapi.repositories.UserRepo;
 import org.projet.searchengineforanimeapi.services.EmailService;
 import org.projet.searchengineforanimeapi.services.UserService;
@@ -27,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private  final  AnimeRepository animeRepository;
     private final AuthenticationService authenticationService;
 
 
@@ -149,10 +152,28 @@ public class UserServiceImpl implements UserService {
         // Find the anime to remove
         boolean removed = user.getAnimes().removeIf(anime -> anime.getId().equals(animeId));
 
+
         if (!removed) {
             throw new RuntimeException("Anime introuvable dans la liste de l'utilisateur.");
         }
 
         userRepo.save(user); // Save the user entity after removing the anime
     }
+
+
+    @Override
+    public void addAnimeToUser(Long userId, Long animeId) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable."));
+
+        // Find the anime to remove
+        List<Long> animes_ids = user.getAnimes().stream().map(Anime::getId).toList();
+        if(!animes_ids.contains(animeId)){
+            Anime anime = animeRepository.findById(animeId).orElseThrow();
+            user.getAnimes().add(anime);
+        }
+
+        userRepo.save(user); // Save the user entity after removing the anime
+    }
+
 }

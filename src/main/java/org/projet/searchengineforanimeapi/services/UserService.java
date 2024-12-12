@@ -29,4 +29,6 @@ public interface UserService {
     Page<AnimeDTO> getAnimesByUserId(Long userId, int page, int size);
 
     void removeAnimeFromUser(Long userId, Long animeId);
+
+    void addAnimeToUser(Long userId, Long animeId);
 }

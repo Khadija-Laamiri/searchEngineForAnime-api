@@ -9,4 +9,5 @@ public class AnimeDTO {
     private Double score;
     private String shortDescription;
     private String doc_name;
+    private Boolean saved;
 }

@@ -1,6 +1,7 @@
 package org.projet.searchengineforanimeapi.controllers;
 
 import org.projet.searchengineforanimeapi.dtos.AnimeDTO;
+import org.projet.searchengineforanimeapi.dtos.SearchResponse;
 import org.projet.searchengineforanimeapi.services.AnimeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +33,12 @@ public class AnimeController {
     }
 
     @GetMapping("/search")
-    public List<AnimeDTO> search(@RequestParam String query) throws Exception {
-        return animeService.search(query);
+    public SearchResponse search(@RequestParam String query, @RequestParam Long userId) throws Exception {
+
+        return animeService.search(query,userId);
     }
+
+
 
 
 }

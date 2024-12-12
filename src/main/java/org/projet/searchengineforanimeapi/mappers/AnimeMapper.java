@@ -9,8 +9,8 @@ public class AnimeMapper {
         dto.setId(anime.getId());
         dto.setTitle(anime.getTitle());
         dto.setScore(anime.getScore());
-//        dto.setShortDescription(generateShortDescription(anime.getDescription()));
-        dto.setShortDescription(anime.getDescription());
+        dto.setShortDescription(generateShortDescription(anime.getDescription()));
+//        dto.setShortDescription(anime.getDescription());
         dto.setDoc_name(anime.getDoc_name());
         return dto;
     }
@@ -19,6 +19,6 @@ public class AnimeMapper {
         if (description == null || description.isEmpty()) {
             return "";
         }
-        return description.length() > 200 ? description.substring(0, 200) + "..." : description;
+        return description.length() > 220 ? description.substring(0, 220) + "..." : description;
     }
 }
