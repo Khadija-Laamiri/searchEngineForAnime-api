@@ -33,12 +33,17 @@ public class AnimeController {
     }
 
     @GetMapping("/search")
-    public SearchResponse search(@RequestParam String query, @RequestParam Long userId) throws Exception {
-
-        return animeService.search(query,userId);
+    public SearchResponse search(@RequestParam String query, @RequestParam(required = false) String userId) throws Exception {
+        Long userIdLong = null;
+        if (userId != null && !userId.equalsIgnoreCase("null")) {
+            try {
+                userIdLong = Long.parseLong(userId);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid userId format");
+            }
+        }
+        return animeService.search(query, userIdLong);
     }
-
-
 
 
 }

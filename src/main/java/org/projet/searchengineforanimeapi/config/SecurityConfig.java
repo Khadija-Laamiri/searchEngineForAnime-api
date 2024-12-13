@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS with custom settings
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/users/verify", "/api/users/resend-code", "/api/users/forgot-password","/import-anime")
+                        .requestMatchers("/api/auth/**", "/api/users/verify", "/api/users/resend-code", "/api/users/forgot-password","/animes/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
